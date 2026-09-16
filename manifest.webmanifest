@@ -1,0 +1,16 @@
+{
+  "name": "랩코트 키우기",
+  "short_name": "랩코트",
+  "description": "실험복 연구자를 키워 노벨상까지 보내는 육성 시뮬레이션",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDF1F4",
+  "theme_color": "#0E7C86",
+  "lang": "ko",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

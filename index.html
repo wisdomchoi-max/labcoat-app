@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E7C86">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="랩코트 키우기">
+<title>랩코트 키우기</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>랩코트 키우기 <small>실험복에서 노벨상까지</small></h1>
+    <div class="clock mono" id="clock" hidden>
+      <span class="eyebrow">연구 인생</span><span class="big" id="clockText"></span>
+    </div>
+  </header>
+
+  <!-- START -->
+  <section class="screen start" id="startScreen">
+    <div class="panel">
+      <h2>새 연구자 등록</h2>
+      <p class="lead">실험복 하나 걸치고 랩에 들어왔습니다. 이 사람이 스톡홀름까지 갈 수 있을까요.</p>
+      <div class="field">
+        <label for="nameInput">이름</label>
+        <input id="nameInput" maxlength="12" value="김연구" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>전공 (시작 능력치 보정)</label>
+        <div class="majors" id="majors"></div>
+      </div>
+      <div class="field">
+        <label>실험복 안에 입을 옷 색</label>
+        <div class="swatches" id="swatches"></div>
+      </div>
+      <button class="primary" id="startBtn">랩에 입성하기</button>
+    </div>
+    <div class="panel rules">
+      <h2>게임 방법</h2>
+      <p class="lead" style="margin-bottom:0">목표는 하나, <b>노벨상</b>입니다. 진로 엔딩은 없습니다. 게임은 노벨상을 받거나 65세에 은퇴할 때만 끝납니다.</p>
+      <ul>
+        <li><b>대학원 시절</b>: 한 턴은 한 달. 실험으로 데이터를 모으고 논문을 투고합니다. 학부 인턴 → 석사 → 박사 → 박사후연구원으로 올라갑니다.</li>
+        <li><b>교수 임용</b>: 박사후연구원 2년 이상, 논문 6편, 인맥 40을 갖추면 임용에 지원할 수 있습니다. 떨어져도 다시 지원할 수 있습니다. 임용 뒤에는 한 턴이 <b>한 분기(3개월)</b>로 바뀝니다.</li>
+        <li><b>교수 시절</b>: 대학원생을 뽑아 랩을 키우고, 과제를 따고, 기조연설로 <b>명성</b>을 쌓습니다. 학생 인건비는 매 분기 연구비에서 빠져나갑니다.</li>
+        <li><b>돌파구</b>: 실험 중 나오는 <b>뜻밖의 발견 조각</b> 3개를 모아 논문으로 쓰면 최상위 저널급 돌파구 논문이 됩니다. 노벨상은 돌파구 없이는 오지 않습니다.</li>
+        <li><b>노벨상</b>: 돌파구 1편 이상, 명성 85 이상, 인용 3000 이상이면 매년 10월 후보에 오릅니다. 그 뒤는 운입니다. 매년 조금씩 확률이 오릅니다.</li>
+        <li><b>번아웃</b>은 게임 오버가 아니라 휴직입니다. 몇 달을 잃고, 명성과 학생이 조금 빠집니다.</li>
+      </ul>
+      <p class="lead" style="margin:4px 0 0;font-size:13px">진행 상황은 이 기기에 자동 저장됩니다.</p>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section class="screen game" id="gameScreen" hidden>
+    <aside class="side">
+      <div class="panel charcard">
+        <div class="avatarbox">
+          <canvas id="avatar" width="12" height="16" aria-label="연구자 아바타"></canvas>
+          <div class="who">
+            <h2 id="whoName"></h2>
+            <div class="stage" id="whoStage"></div>
+            <div class="mood" id="whoMood"></div>
+          </div>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="res" id="res"></div>
+      </div>
+      <div class="panel goal">
+        <div class="eyebrow" style="margin-bottom:8px">노벨상까지</div>
+        <ul id="goal"></ul>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="panel">
+        <div class="event" id="event">
+          <div class="eyebrow" id="evWhen">이번 달</div>
+          <h3 id="evTitle"></h3>
+          <p id="evBody"></p>
+          <div class="delta" id="evDelta"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:10px" id="actLabel">이번 달 할 일 하나 고르기</div>
+        <div class="actions" id="actions"></div>
+        <div class="pending" id="pending"></div>
+      </div>
+      <div class="panel">
+        <div class="eyebrow" style="margin-bottom:8px">연구 노트</div>
+        <div class="log"><ul id="log"></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENDING -->
+  <section class="screen panel ending" id="endScreen" hidden>
+    <div class="eyebrow" id="endEyebrow"></div>
+    <h2 id="endTitle"></h2>
+    <p class="lead" id="endBody"></p>
+    <canvas id="avatarEnd" width="12" height="16" class="avatar-end"></canvas>
+    <div class="summary mono" id="summary"></div>
+    <div class="badges" id="badges"></div>
+    <button class="primary" id="restartBtn" style="max-width:320px">새 연구자로 다시 시작</button>
+  </section>
+
+  <p class="footer">현실의 학계와 다를 수 있습니다. 다만 리뷰어 2번은 같습니다.</p>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
